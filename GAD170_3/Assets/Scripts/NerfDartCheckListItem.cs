@@ -5,40 +5,51 @@ using UnityEngine;
 public class NerfDartCheckListItem : CheckListItem
 {
     public List<GameObject> Dragons = new List<GameObject>();
+    //make a list for dragons
     public int numberOfDragonsHit;
+    //interger to find the amount of dragons hit
 
     public override bool IsComplete { get { return Dragons.Count == 0; } }
+    //set the dragons list to 0
 
     public override float GetProgress()
     {
         return (float)numberOfDragonsHit / (float)Dragons.Count;
+        //set the progress by checking the numberOfDragonsHit to the Dragons list
     }
 
     public override string GetStatusReadout()
     {
         return (numberOfDragonsHit - Dragons.Count) + " / " + numberOfDragonsHit.ToString() ;
+        //set the progress to a GUI and update it constantly
     }
 
     public override string GetTaskReadout()
     {
         return "Shoot some Dragons";
+        //Set the task name on the Gui
     }
 
     public void Start()
     {
         numberOfDragonsHit = Dragons.Count;
+        // on start set number of dragons hit to dragons.count
     }
 
     public void OnDragonHit()
     {
+        //on dragon hit run this code
+        //Check to see if number of dragons is less then number of dragons in the list
         if (numberOfDragonsHit < Dragons.Count)
         {
+            //check the checklistitem changed data
             var ourData = new GameEvents.CheckListItemChangedData();
+            //change it to this
             ourData.item = this;
             ourData.previousItemProgress = GetProgress();
-
+            //add 1 to the numberOfDragonsHit
             numberOfDragonsHit++;
-
+            // add the change to the data
             GameEvents.InvokeCheckListItemChanged(ourData);
         }
     }

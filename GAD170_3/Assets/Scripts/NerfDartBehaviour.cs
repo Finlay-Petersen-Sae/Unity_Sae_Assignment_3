@@ -14,7 +14,7 @@ public class NerfDartBehaviour : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-       
+       //find nerf dart rigid body
     }
 
     private void LateUpdate()
@@ -23,10 +23,11 @@ public class NerfDartBehaviour : MonoBehaviour
         // an object with colliders that will then have new overlaps and be physic'ed apart
         if(rigidbody.velocity.sqrMagnitude > 0.5f)
             transform.rotation = Quaternion.LookRotation( rigidbody.velocity.normalized, Vector3.up);
-         
+         // set travel and speed
     }
     private void OnCollisionEnter(Collision collision)
     {
         Destroy(this.gameObject);
+        //destroy object on collision
     }
 }

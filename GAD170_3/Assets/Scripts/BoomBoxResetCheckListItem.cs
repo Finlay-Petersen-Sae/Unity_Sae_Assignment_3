@@ -21,6 +21,10 @@ public class BoomBoxResetCheckListItem : CheckListItem
 
     // A bool to check if we have already dropped the ball over the edge.
     public bool hasDroppedBowlBall = false;
+    /// <summary>
+    /// make a bool to check if hasDroppedBowlBall is true 
+    /// this is to check if the bowlingball has left the world trigger
+    /// </summary>
     // This is an example of a get and set function, we can use get and sets to do specific code, when we want to get or set a variable.
     // Get is when we want to get the value of IsComplete i.e. mybool = IsComplete; 
     // Set is when we want to change the value of IsComplete i.e.IsComplete = myBool;
@@ -32,7 +36,10 @@ public class BoomBoxResetCheckListItem : CheckListItem
     // In this example below we are overriding the function IsComplete that is in the CheckListItem class to do something else in this case,
     // we are returning the bool hasDroppedBall.
     public override bool IsComplete { get { return hasDroppedBowlBall; } }
-
+    /// <summary>
+    /// this event is complete when the bowling ball is has left the world trigger
+    /// </summary>
+    /// <returns></returns>
     // This function again is returning a float of our progress of this task,
     // in this case when hasDroppedBall is true we return 1, and if it isn't we return 0;
     public override float GetProgress()
@@ -49,6 +56,7 @@ public class BoomBoxResetCheckListItem : CheckListItem
         // {
         //      return 0;
         // }
+        ///makes it so that hasDroppedBowlBall can only be 1 or 0 true or false
         return hasDroppedBowlBall ? 1 : 0;
     }
 
@@ -56,6 +64,7 @@ public class BoomBoxResetCheckListItem : CheckListItem
     // We are returning a string of the value of the bool hasDroppedBall so it will either return "True" or "False";
     public override string GetStatusReadout()
     {
+        // make it so that the hasDroppedBowlBall bool is a string so it can be displayed on a Gui
         return hasDroppedBowlBall.ToString();
     }
 
@@ -63,6 +72,7 @@ public class BoomBoxResetCheckListItem : CheckListItem
     // When this function is called in CheckListItemClass we are instead returning the string of "Got away from you huh?".
     public override string GetTaskReadout()
     {
+        // set the event name to Bowl it Over the Edge
         return "Bowl it over the edge!";
     }
 
@@ -78,22 +88,28 @@ public class BoomBoxResetCheckListItem : CheckListItem
             && data.offendingCollider.attachedRigidbody != null &&
             data.offendingCollider.attachedRigidbody.CompareTag("BowlingBall"))
         {
+            ///check if the bowling ball has exited the world trigger and if it has run this script
             // We can use the keyword var to hold any sort of data, i.e. a var ourData we could put anythin into it, a bool, a string, an int etc.
             // The downside is because it can be everything Unity has to assign the most amount of memory it can to accomodate it, so use var's wisely especially.
             // in big projects. If I didn't want to use a var I could write it as GameEvents.CheckListItemChangedData ourData = new GameEvents.CheckListItemChangedData(); .
             // For this case we are creating a new instance of the class CheckListItemChangedData and storing it in our var  
             var ourData = new GameEvents.CheckListItemChangedData();
+            ///create a new game event checklistitemchangeddata as a new varaible called ourdata
             // I then take ourData and get the item variable and assign the instance of this class to it, using the 'this' keyword.
             ourData.item = this;
+            ///make our data equal this
             // From there I can set the previousItemProgress Variable of our data to our current progress in this case it return 1 as we have dropped the ball over the edge.
             // i.e. from 0 being false, to 1 being true, so the previous item progress was it hadn't been dropped over the edge to now it has been dropped over the edge.
             ourData.previousItemProgress = GetProgress();
+            ///set our data.previousitemprogress to a new progress
             // Since the ball has now gone over the edge we want to se the hasDroppedBall bool to true, so we can't do this function again as the task is complete.
             hasDroppedBowlBall = true;
+            ///set has dropped BowlBall to true
 
             // We then tell the game events to invoke the CheckListItemChanged event and pass in our data.
             // this will take our data and up the tasks completed in the UI.
             GameEvents.InvokeCheckListItemChanged(ourData);
+            ///update the gameevents to our data
         }
     }
 
